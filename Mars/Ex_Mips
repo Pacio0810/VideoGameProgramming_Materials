@@ -1,0 +1,36 @@
+.data
+display : .space 256
+
+.text
+
+li $t0, 0xF5F5DC
+li $t3, 0xff0000
+li $t1, 0
+li $t2, 0
+loop :
+	beq $t1, 256, exit
+	sw $t0 display($t1)
+	addiu $t1, $t1, 4
+	
+	beq $t1, 36, drawRect 
+	beq $t1, 68, drawRect
+	beq $t1, 100, drawRect
+	beq $t1, 132, drawRect
+	
+	
+	j loop
+
+	
+drawRect :
+
+	sw $t3 display($t1)
+	addiu $t1, $t1, 4
+	addiu $t2, $t2,4
+	
+	bne $t2, 24, drawRect
+	li $t2, 0
+	j loop
+			
+exit :
+	lui $v0 10
+	syscall 
